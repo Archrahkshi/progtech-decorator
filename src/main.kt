@@ -96,9 +96,11 @@ internal class ChangeFont(
         super.apply()
 
         val file = ShowSimpleText.file
-        val text = file.readText()
-            .replaceFirst("<body>\n", "<body>\n<font face=\"$font\">")
-        file.writeText(text)
+        var lines = file.readLines()
+        lines = lines.take(2) +
+                "<font face=\"$font\">" +
+                lines.takeLast(lines.size - 2)
+        file.writeText(lines.joinToString(separator = "\n"))
     }
 }
 
